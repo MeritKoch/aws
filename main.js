@@ -39,19 +39,32 @@ async function showStations(url) {
     let response = await fetch(url);
     let geojson = await response.json();
 
-    // Wetterstationen mit Icons und Popups
+    // Wetterstationen Icons
     console.log(geojson);
-    //Icons
     L.geoJSON(geojson, {
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, {
                 icon: L.icon({
-                    iconUrl: `icons/wifi.png`,
+                    iconUrl: "icons/wifi.png",
                     iconAnchor: [16, 37],
                     popupAnchor: [0, -37]
                 })
-
             });
+        },
+        //Popups
+        onEachFeature: function (feature, layer) {
+            console.log(feature.properties);
+            layer.bindPopup(`
+            <h4>${feature.properties.name} </h4>
+            <ul>
+                <li>Lufttemperatur (°C): ${feature.properties.LT || "-"} </li>
+                <li>Relative Luftfeuchte (%): ${feature.properties.LT || "-"} </li>
+                <li>Windgeschwindigkeit (km/h): ${feature.properties.LT || "-"} </li>
+                <li>Schneehöhe (cm): ${feature.properties.LT || "-"}</li>
+            </ul>
+            
+            `);
+
         }
     }).addTo(themaLayer.stations);
 
