@@ -51,17 +51,17 @@ async function showStations(url) {
                 })
             });
         },
-        //Popups
+        //Popups (Daten eventuell falsch zugeordnet)
         onEachFeature: function (feature, layer) {
             console.log(feature.properties);
-            console.log(feature.geometry)
+            //console.log(feature.geometry.coordinates)
             layer.bindPopup(`
-            <h4>${feature.properties.name} (${feature.geometry.coordinates})</h4>
+            <h4>${feature.properties.name} (${feature.geometry.coordinates[2]} m)</h4>
             <ul>
                 <li>Lufttemperatur (°C): ${feature.properties.LT || "-"} </li>
-                <li>Relative Luftfeuchte (%): ${feature.properties.LT || "-"} </li>
-                <li>Windgeschwindigkeit (km/h): ${feature.properties.LT || "-"} </li>
-                <li>Schneehöhe (cm): ${feature.properties.LT || "-"}</li>
+                <li>Relative Luftfeuchte (%): ${feature.properties.RH || "-"} </li>
+                <li>Windgeschwindigkeit (km/h): ${feature.properties.WG || "-"} </li>
+                <li>Schneehöhe (cm): Keine Ahnung welcher Wert das ist || "-"}</li>
             </ul>
             ${feature.properties.date}
             `);
