@@ -17,6 +17,7 @@ let themaLayer = {
     temperature: L.featureGroup(),
     wind: L.featureGroup().addTo(map),
     snow: L.featureGroup(),
+    rain: L.featureGroup().addTo(map),
 }
 
 // Hintergrundlayer
@@ -33,6 +34,7 @@ L.control.layers({
     "Temperatur °C": themaLayer.temperature,
     "Windgeschwindigkeit km/h": themaLayer.wind,
     "Schneehöhe cm": themaLayer.snow,
+    "Regen": themaLayer.rain,
 }).addTo(map);
 
 // Maßstab
@@ -113,6 +115,19 @@ function showSnow(geojson) {
         }
     }).addTo(themaLayer.snow);
 }
+
+//Regen Rainviewer
+// Change default options
+L.control.rainviewer({
+    position: 'bottomleft',
+    nextButtonText: '>',
+    playStopButtonText: 'Start/Stopp',
+    prevButtonText: '<',
+    positionSliderLabelText: "Stunde:",
+    opacitySliderLabelText: "Deckkraft:",
+    animationInterval: 500,
+    opacity: 0.5
+}).addTo(map);
 
 // GeoJSON der Wetterstationen laden
 async function showStations(url) {
