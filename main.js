@@ -28,13 +28,24 @@ L.control.layers({
     "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery")
 }, {
     "Wetterstationen": themaLayer.stations,
-    "Temperatur": themaLayer.temperature,
+    "Temperatur °C": themaLayer.temperature,
 }).addTo(map);
 
 // Maßstab
 L.control.scale({
     imperial: false,
 }).addTo(map);
+
+// Farben aus color.js holen
+function getColor(value, ramp) {
+    console.log("getColor: value: ", value, "ramp: ", ramp);
+    for (let rule of ramp) {
+        console.log("Rule: ", rule);
+        if (value >= rule.min && value < rule.max) {
+            return rule.color;
+        }
+    }
+}
 
 //Temperaturicons extra darstellen
 function showTemperature(geojson) {
@@ -46,10 +57,11 @@ function showTemperature(geojson) {
             }
         },
         pointToLayer: function (feature, latlng) {
+            let color = getColor(feature.properties.LT, COLORS.temperature);
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html: `<span>${feature.properties.LT.toFixed(1)}</span>`
+                    html: `<span style="background-color:${color};">${feature.properties.LT.toFixed(1)}</span>`
                 })
             })
         }
